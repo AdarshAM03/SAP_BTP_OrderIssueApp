@@ -1,0 +1,71 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:macros="sap.fe.macros">
+	<VBox core:require="{ handler: 'approvalapp/ext/fragment/ApprovalHistory'}">
+		<Table
+    headerText="Approval History"
+    items="{
+        path: 'issueToApprovalHistory',
+        sorter: {
+            path: 'level',
+            descending: false
+        }
+    }">
+
+    <columns>
+        <Column mergeDuplicates="true">
+            <header>
+                <Text text="Level" />
+            </header>
+        </Column>
+
+        <Column>
+            <header>
+                <Text text="Approver Name" />
+            </header>
+        </Column>
+
+        <Column>
+            <header>
+                <Text text="Email" />
+            </header>
+        </Column>
+
+        <Column>
+            <header>
+                <Text text="Status" />
+            </header>
+        </Column>
+
+        <Column minScreenWidth="Tablet" demandPopin="true">
+            <header>
+                <Text text="Started" />
+            </header>
+        </Column>
+
+        <Column minScreenWidth="Tablet" demandPopin="true">
+            <header>
+                <Text text="Completed" />
+            </header>
+        </Column>
+
+        <Column>
+            <header>
+                <Text text="DaysTaken" />
+            </header>
+        </Column>
+    </columns>
+
+    <items>
+        <ColumnListItem vAlign="Middle">
+            <Text text="{level}" />
+            <Text text="{approverName}" />
+            <Text text="{email}" />
+			<Text text="{status}" />
+			<Text text="{started}" />
+			<Text text="{completed}" />
+            <Text text="{DaysTaken}" />
+        </ColumnListItem>
+    </items>
+
+</Table>
+	</VBox>
+</core:FragmentDefinition>

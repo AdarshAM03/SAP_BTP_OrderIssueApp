@@ -1,0 +1,19 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:macros="sap.fe.macros">
+	<VBox id="_IDGenVBox" core:require="{ handler: 'orderissueapp/ext/fragment/Comment'}">
+		<HBox id="_IDGenHBox1" justifyContent="End">
+        <Button id="_IDGenButton1"
+            text="Previous comments"
+            icon="sap-icon://comment"
+            type="Transparent"
+            press="handler.onOpenComments"/>
+    </HBox>
+ 
+    <TextArea
+            id="_IDGenTextArea"
+            width="100%"
+            rows="6"
+            placeholder="Write your comment"
+            editable="{= ${ui>/isEditable} }"
+       />
+	</VBox>
+</core:FragmentDefinition>

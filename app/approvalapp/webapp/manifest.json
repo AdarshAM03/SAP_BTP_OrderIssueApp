@@ -1,0 +1,249 @@
+{
+  "_version": "1.76.0",
+  "sap.app": {
+    "id": "approvalapp",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.20.0",
+      "toolsId": "ea0089f1-9c35-4959-ae5d-002fa0c73462"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/approval/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.143.2",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "approvalapp.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "IssueList",
+          "target": "IssueList"
+        },
+        {
+          "pattern": "Issue({key}):?query:",
+          "name": "IssueObjectPage",
+          "target": "IssueObjectPage"
+        },
+        {
+          "pattern": "Issue({key})/issueTocomments({key2}):?query:",
+          "name": "CommentObjectPage",
+          "target": "CommentObjectPage"
+        }
+      ],
+      "targets": {
+        "IssueList": {
+          "type": "Component",
+          "id": "IssueList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/Issue",
+              "variantManagement": "Page",
+              "navigation": {
+                "Issue": {
+                  "detail": {
+                    "route": "IssueObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  }
+                }
+              },
+              "initialLoad": "Enabled"
+            }
+          }
+        },
+        "IssueObjectPage": {
+          "type": "Component",
+          "id": "IssueObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/Issue",
+              "navigation": {
+                "issueTocomments": {
+                  "detail": {
+                    "route": "CommentObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "issueTocomments/@com.sap.vocabularies.UI.v1.LineItem#Comments": {
+                  "columns": {
+                    "DataField::description": {
+                      "width": "86%"
+                    }
+                  }
+                },
+                "issueToattachment/@com.sap.vocabularies.UI.v1.LineItem#Attachments": {
+                  "columns": {
+                    "DataField::mediaType": {
+                      "width": "30%"
+                    },
+                    "DataField::fileName": {
+                      "width": "30%"
+                    },
+                    "DataField::content": {
+                      "width": "30%"
+                    }
+                  }
+                }
+              },
+              "content": {
+                "footer": {
+                  "actions": {
+                    "2": {
+                      "press": "approvalapp.ext.controller.Reject.rejectmethod",
+                      "visible": true,
+                      "enabled": true,
+                      "text": "Reject",
+                      "position": {
+                        "placement": "After"
+                      }
+                    },
+                    "Accept": {
+                      "press": "approvalapp.ext.controller.Accept.acceptmethod",
+                      "visible": true,
+                      "enabled": true,
+                      "text": "Accept",
+                      "position": {
+                        "anchor": "2",
+                        "placement": "Before"
+                      }
+                    }
+                  }
+                },
+                "body": {
+                  "sections": {
+                    "ApprovalComment": {
+                      "template": "approvalapp.ext.fragment.ApprovalComment",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "Attachments1"
+                      },
+                      "title": "Comments"
+                    },
+                    "Attachments1": {
+                      "template": "approvalapp.ext.fragment.Attachments",
+                      "position": {
+                        "placement": "Before",
+                        "anchor": "ApprovalComment"
+                      },
+                      "title": "Attachments"
+                    },
+                    "ApprovalHistory": {
+                      "template": "approvalapp.ext.fragment.ApprovalHistory",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "ApprovalComment"
+                      },
+                      "title": "Process History"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "CommentObjectPage": {
+          "type": "Component",
+          "id": "CommentObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/Issue/issueTocomments"
+            }
+          }
+        }
+      }
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ObjectPage.ObjectPageController#approvalapp::IssueObjectPage": {
+            "controllerName": "approvalapp.ext.controller.IssueobjPage"
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  }
+}

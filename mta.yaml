@@ -1,0 +1,201 @@
+_schema-version: 3.3.0
+ID: OrdersManagementApplocation
+description: A simple CAP project.
+version: 1.0.0
+modules:
+- name: OrdersManagementApplocation-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: OrdersManagementApplocation-db
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+    instances: 1
+  build-parameters:
+    builder: npm-ci
+- name: OrdersManagementApplocation-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: OrdersManagementApplocation-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: OrdersManagementApplocation-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: OrdersManagementApplocation-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - admin.zip
+      name: admin
+      target-path: resources/
+    - artifacts:
+      - application2.zip
+      name: application2
+      target-path: resources/
+    - artifacts:
+      - app2.zip
+      name: app2
+      target-path: resources/
+    - artifacts:
+      - appl2.zip
+      name: appl2
+      target-path: resources/
+    - artifacts:
+      - orderissueapp.zip
+      name: orderissueapp
+      target-path: resources/
+    - artifacts:
+      - approvalapp.zip
+      name: approvalapp
+      target-path: resources/
+    - artifacts:
+      - project1.zip
+      name: project1
+      target-path: resources/
+    - artifacts:
+      - approver.zip
+      name: approver
+      target-path: resources/
+    - artifacts:
+      - approverlevel.zip
+      name: approverlevel
+      target-path: resources/
+- name: admin
+  type: html5
+  path: app/admin
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: application2
+  type: html5
+  path: app/application2
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: app2
+  type: html5
+  path: app/app2
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: appl2
+  type: html5
+  path: app/appl2
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: orderissueapp
+  type: html5
+  path: app/orderissueapp
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: approvalapp
+  type: html5
+  path: app/approvalapp
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: project1
+  type: html5
+  path: app/project1
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: approver
+  type: html5
+  path: app/approver
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: approverlevel
+  type: html5
+  path: app/approverlevel
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: OrdersManagementApplocation-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: OrdersManagementApplocation-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: OrdersManagementApplocation-html5-service
+    service-plan: app-host
+- name: OrdersManagementApplocation-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: false
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: OrdersManagementApplocation-destination-service
+    service-plan: lite
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm ci
+    - npx cds build --production

@@ -1,0 +1,60 @@
+<mvc:View
+    controllerName="project1.controller.View1"
+    height="100%"
+    xmlns:form="sap.ui.layout.form"
+		xmlns:core="sap.ui.core"
+		xmlns:u="sap.ui.unified"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns="sap.m">
+
+    <Page title="Create Approval">
+        <content>
+
+            <Wizard id="approvalWizard">
+
+                <!-- STEP 1 -->
+                <WizardStep
+                    id="step1"
+                    title="Issue Details"
+                    validated="false">
+
+                    <VBox class="sapUiSmallMargin">
+                        <Label text="Issue ID" />
+                        <Input
+                            id="issueIdInput"
+                            placeholder="Enter Issue ID"
+                            liveChange="onValidateStep1" />
+                    </VBox>
+
+                </WizardStep>
+
+                <!-- STEP 2 -->
+                <WizardStep
+                    id="step2"
+                    title="Review"
+                    validated="true">
+
+                    <Text
+                        text="Issue ID:"
+                        class="sapUiSmallMarginTop" />
+                    <Text
+                        id="reviewIssueId"
+                        class="sapUiSmallMarginBottom" />
+
+                </WizardStep>
+
+            </Wizard>
+
+        </content>
+
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer />
+                <Button
+                    text="Submit"
+                    type="Emphasized"
+                    press="onSubmit" />
+            </Toolbar>
+        </footer>
+    </Page>
+</mvc:View>

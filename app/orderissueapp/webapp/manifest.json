@@ -1,0 +1,241 @@
+{
+  "_version": "1.76.0",
+  "sap.app": {
+    "id": "orderissueapp",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.20.0",
+      "toolsId": "48791291-7979-48a4-948e-887bfabdc482"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/order-issue/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.143.2",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "orderissueapp.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "OrderList",
+          "target": "OrderList"
+        },
+        {
+          "pattern": "Order({key}):?query:",
+          "name": "OrderObjectPage",
+          "target": "OrderObjectPage"
+        },
+        {
+          "pattern": "Order({key})/orderToissue({key2}):?query:",
+          "name": "IssueObjectPage",
+          "target": "IssueObjectPage"
+        }
+      ],
+      "targets": {
+        "OrderList": {
+          "type": "Component",
+          "id": "OrderList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/Order",
+              "variantManagement": "Page",
+              "navigation": {
+                "Order": {
+                  "detail": {
+                    "route": "OrderObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  }
+                }
+              },
+              "initialLoad": "Enabled"
+            }
+          }
+        },
+        "OrderObjectPage": {
+          "type": "Component",
+          "id": "OrderObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/Order",
+              "navigation": {
+                "orderToissue": {
+                  "detail": {
+                    "route": "IssueObjectPage"
+                  }
+                }
+              },
+              "content": {
+                "footer": {
+                  "actions": {
+                    "button": {
+                      "press": "orderissueapp.ext.controller.Approval.Onapproval",
+                      "visible": "{= !${ui>/isEditable}}",
+                      "enabled": true,
+                      "text": "Send  to Approve"
+                    }
+                  }
+                },
+                "body": {
+                  "sections": {
+                    "ProceessHistory": {
+                      "template": "orderissueapp.ext.fragment.ProceessHistory",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "Issues"
+                      },
+                      "title": "Process History"
+                    }
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "orderToapprovalHistory/@com.sap.vocabularies.UI.v1.LineItem#ApprovalHistory": {
+                  "columns": {
+                    "DataField::ApprovalHistoryToOrder::orderToapprovalHistory::approverName": {
+                      "width": "18%"
+                    },
+                    "DataField::ApprovalHistoryToOrder::orderToapprovalHistory::level": {
+                      "width": "18%"
+                    },
+                    "DataField::ApprovalHistoryToOrder::orderToapprovalHistory::email": {
+                      "width": "18%"
+                    },
+                    "DataField::status": {
+                      "width": "18%"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "IssueObjectPage": {
+          "type": "Component",
+          "id": "IssueObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/Order/orderToissue",
+              "content": {
+                "body": {
+                  "sections": {
+                    "Comment": {
+                      "template": "orderissueapp.ext.fragment.Comment",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "IssuesDetails"
+                      },
+                      "title": "Comment"
+                    },
+                    "Attachments": {
+                      "template": "orderissueapp.ext.fragment.Attachments",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "Comment"
+                      },
+                      "title": "Attachments"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ObjectPage.ObjectPageController#orderissueapp::IssueObjectPage": {
+            "controllerName": "orderissueapp.ext.controller.IssueObj"
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  },
+  "sap.fe": {
+    "app": {}
+  }
+}

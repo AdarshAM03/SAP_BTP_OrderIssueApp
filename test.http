@@ -1,0 +1,18 @@
+POST https://port4004-workspaces-ws-3vryz.us10.trial.applicationstudio.cloud.sap/odata/v4/MyService/Customer
+Content-Type: application/json
+
+{
+//  "cID": "CUST001",
+  "name": "Adarsh",
+  "email": "adarsh@gmail.com",
+  "phone": "9876543210",
+  "address": "Bangalore",
+
+  "customerToorders": [
+    {
+      "oID": "ORD001",
+      "status": "Delivered",
+      "totalAmount": 1200.50
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+{
+  "_version": "1.76.0",
+  "sap.app": {
+    "id": "admin",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.20.0",
+      "toolsId": "7ae15335-d683-4214-8798-718bc05b374e"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/my/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.143.2",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "admin.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "CustomerList",
+          "target": "CustomerList"
+        },
+        {
+          "pattern": "Customer({key}):?query:",
+          "name": "CustomerObjectPage",
+          "target": "CustomerObjectPage"
+        },
+        {
+          "pattern": "Customer({key})/customerToorders({key2}):?query:",
+          "name": "OrderObjectPage",
+          "target": "OrderObjectPage"
+        }
+      ],
+      "targets": {
+        "CustomerList": {
+          "type": "Component",
+          "id": "CustomerList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/Customer",
+              "variantManagement": "Page",
+              "navigation": {
+                "Customer": {
+                  "detail": {
+                    "route": "CustomerObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable",
+                    "widthIncludingColumnHeader": true
+                  },
+                  "columns": {
+                    "DataField::cID": {
+                      "widthIncludingColumnHeader": true,
+                      "width": "10%"
+                    },
+                    "DataField::name": {
+                      "widthIncludingColumnHeader": true,
+                      "width": "10%"
+                    },
+                    "DataField::email": {
+                      "widthIncludingColumnHeader": true,
+                      "width": "20%"
+                    },
+                    "DataField::phone": {
+                      "widthIncludingColumnHeader": true
+                    },
+                    "DataField::address": {
+                      "widthIncludingColumnHeader": true
+                    }
+                  }
+                }
+              },
+              "initialLoad": "Enabled"
+            }
+          }
+        },
+        "CustomerObjectPage": {
+          "type": "Component",
+          "id": "CustomerObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/Customer",
+              "navigation": {
+                "customerToorders": {
+                  "detail": {
+                    "route": "OrderObjectPage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "OrderObjectPage": {
+          "type": "Component",
+          "id": "OrderObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/Customer/customerToorders",
+              "navigation": {}
+            }
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  }
+}

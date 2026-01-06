@@ -1,0 +1,56 @@
+{
+  "name": "OrdersManagementApplocation",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "dependencies": {
+    "@cap-js/hana": "^2",
+    "@sap-cloud-sdk/http-client": "^4.2.0",
+    "@sap/cds": "^9",
+    "axios": "^1.13.2",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^2",
+    "@sap/cds-dk": "^9",
+    "cds-plugin-ui5": "^0.13.0",
+    "mbt": "^1.2.29",
+    "rimraf": "^5.0.5"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-admin": "cds watch --open admin/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "undeploy": "cf undeploy OrdersManagementApplocation --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "watch-application2": "cds watch --open application2/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-app2": "cds watch --open app2/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-appl2": "cds watch --open appl2/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-orderissueapp": "cds watch --open orderissueapp/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-approvalapp": "cds watch --open approvalapp/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-project1": "cds watch --open project1/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-approver": "cds watch --open approver/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-approverlevel": "cds watch --open approverlevel/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "private": true,
+  "cds": {
+    "requires": {
+      "db": "hana"
+    }
+  },
+  "workspaces": [
+    "app/*"
+  ],
+  "sapux": [
+    "app/admin",
+    "app/application2",
+    "app/app2",
+    "app/app2",
+    "app/app2",
+    "app/app2",
+    "app/appl2",
+    "app/orderissueapp",
+    "app/approvalapp",
+    "app/approver",
+    "app/approverlevel"
+  ]
+}
