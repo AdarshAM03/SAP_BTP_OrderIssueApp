@@ -58,7 +58,7 @@ sap.ui.define([
                 $NavigationPropertyPath: "issueToApprovalHistory"
             }]);
             sap.m.MessageBox.success("Issue Approved");
-
+            console.log("commit")
             
         }
     };
